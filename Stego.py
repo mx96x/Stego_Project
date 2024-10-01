@@ -22,6 +22,12 @@ def bin_to_message(binary):
     byte_array = bytearray(int(binary[i:i+8], 2) for i in range(0, len(binary), 8))
     return byte_array.decode('utf-8', errors='ignore')
 
+# Function to check if the image can hold the message
+def can_encode_message(image, message):
+    max_capacity = image.width * image.height  # 1 bit per pixel
+    message_binary_length = len(message_to_bin(message))
+    return message_binary_length <= max_capacity
+
 # Function to embed a message in an image
 def encode_message(image, message):
     binary_message = message_to_bin(message) + '1111111111111110'  # EOF marker
@@ -65,18 +71,21 @@ if option == "Encode a Message":
         message = st.text_area("Enter the message you want to encode")
         if st.button("Encode Message"):
             if message:
-                encoded_image = encode_message(image, message)
-                buf = io.BytesIO()
-                encoded_image.save(buf, format='PNG')
-                byte_im = buf.getvalue()
+                if can_encode_message(image, message):
+                    encoded_image = encode_message(image, message)
+                    buf = io.BytesIO()
+                    encoded_image.save(buf, format='PNG')
+                    byte_im = buf.getvalue()
 
-                st.success("Message encoded successfully!")
-                st.download_button(
-                    label="Download Encoded Image",
-                    data=byte_im,
-                    file_name="encoded_image.png",
-                    mime="image/png"
-                )
+                    st.success("Message encoded successfully!")
+                    st.download_button(
+                        label="Download Encoded Image",
+                        data=byte_im,
+                        file_name="encoded_image.png",
+                        mime="image/png"
+                    )
+                else:
+                    st.error("The message is too long to encode in this image.")
             else:
                 st.error("Please enter a message to encode.")
 
@@ -89,4 +98,3 @@ elif option == "Decode a Message":
         if st.button("Decode Message"):
             decoded_message = decode_message(image)
             st.text_area("Decoded Message", decoded_message)
-
