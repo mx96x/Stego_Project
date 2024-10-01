@@ -3,15 +3,15 @@ from PIL import Image
 import io
 
 #I left to two functions below to outline the trouble I was having with special characters and ASCII
-'''# Function to convert a message string to binary format
-def message_to_bin(message):
-    return ''.join(format(ord(char), '08b') for char in message)
+# Function to convert a message string to binary format
+#def message_to_bin(message):
+    #return ''.join(format(ord(char), '08b') for char in message)
 
 # Function to convert binary to a string
-def bin_to_message(binary):
-    chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
-    message = ''.join([chr(int(char, 2)) for char in chars])
-    return message'''
+#def bin_to_message(binary):
+    #chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
+    #message = ''.join([chr(int(char, 2)) for char in chars])
+    #return message'''
 
 # Function to convert a message string to binary format (UTF-8)
 def message_to_bin(message):
