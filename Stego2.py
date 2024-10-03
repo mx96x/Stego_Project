@@ -87,3 +87,4 @@ elif option == "Decode a Message":
         if st.button("Decode Message"):
             decoded_message = decode_message(image)
             st.text_area("Decoded Message", decoded_message)
+ 
